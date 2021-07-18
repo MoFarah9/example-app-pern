@@ -22,7 +22,7 @@ export default function Article({ id }) {
   return (
     <div>
       <h2>{title}</h2>
-      <p>{body}</p>
+      <article dangerouslySetInnerHTML={{ __html: body }} />
     </div>
   )
 }

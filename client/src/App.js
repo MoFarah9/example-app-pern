@@ -3,8 +3,12 @@ import Article from './components/Article'
 export default function App() {
   return (
     <div className="App">
-      <h1>Example Website</h1>
-      <Article id="1" />
+      <header>
+        <div>Example Website</div>
+      </header>
+      <main>
+        <Article id="1" />
+      </main>
     </div>
   )
 }
