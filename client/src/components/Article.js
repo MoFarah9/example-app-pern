@@ -28,8 +28,9 @@ export default function Article({ id }) {
 }
 
 async function fetchArticle(id) {
+  const apiRoot = 'http://localhost:5000/api'
   try {
-    const res = await fetch(`http://localhost:8080/api/articles/${id}`)
+    const res = await fetch(`${apiRoot}/articles/${id}`)
     if (res.status === 404) throw new Error("This article doesn't exist")
     return await res.json()
   } catch (error) {
