@@ -14,11 +14,16 @@ const storage = multer.diskStorage({
 
 const fileFilter = function (req, file, cb) {
   // Accept images only
-  if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
-    req.fileValidationError = 'Only image files are allowed!'
-    return cb(new Error('Only image files are allowed!'), false)
+  if (
+    file.mimetype == 'image/png' ||
+    file.mimetype == 'image/jpg' ||
+    file.mimetype == 'image/jpeg'
+  ) {
+    cb(null, true)
+  } else {
+    cb(null, false)
+    return cb(new Error('Only .png, .jpg and .jpeg format allowed!'))
   }
-  cb(null, true)
 }
 
 // 10 is the limit for number of uploaded files at once

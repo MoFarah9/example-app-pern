@@ -32,8 +32,8 @@ router.post('/upload', (req, res) => {
   upload(req, res, function (err) {
     if (req.fileValidationError) {
       return res.status(400).send({ message: req.fileValidationError })
-      // } else if (!req.file) {
-      //   return res.status(400).json({ message: 'Please select files to upload' })
+    } else if (!req.files) {
+      return res.status(400).json({ message: 'Please select files to upload' })
     } else if (err) {
       console.log(err)
       return res.sendStatus(500)
