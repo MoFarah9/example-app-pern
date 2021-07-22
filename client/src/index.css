@@ -31,3 +31,8 @@ code {
 .App main p {
   line-height: 150%;
 }
+
+.editor-wrapper {
+  border: 1px solid #f1f1f1;
+  padding: 2px;
+}
