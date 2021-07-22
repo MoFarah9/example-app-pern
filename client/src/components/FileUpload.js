@@ -5,17 +5,16 @@ export default function FileUpload() {
 
   const onFileChange = (event) => setSelectedFiles(event.target.files)
 
-  const onFileUpload = () => {
+  const uploadFiles = () => {
     if (!selectedFiles) return
 
     const formData = new FormData()
+
     for (let i = 0; i < selectedFiles.length; i++) {
-      formData.append('File', selectedFiles[i], selectedFiles[i].name)
+      formData.append('files', selectedFiles[i], selectedFiles[i].name)
     }
 
-    console.log(selectedFiles)
-
-    fetch('api/uploadFiles', {
+    fetch('/api/upload', {
       method: 'POST',
       body: formData,
     })
@@ -28,13 +27,18 @@ export default function FileUpload() {
       })
   }
 
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    uploadFiles()
+  }
+
   return (
     <section style={{ marginTop: '3rem' }}>
       <h2>Files Upload</h2>
-      <div>
-        <input type="file" multiple onChange={onFileChange} />
-        <button onClick={onFileUpload}>Upload!</button>
-      </div>
+      <form onSubmit={handleSubmit}>
+        <input type="file" name="files" multiple onChange={onFileChange} />
+        <button type="submit">Upload!</button>
+      </form>
     </section>
   )
 }

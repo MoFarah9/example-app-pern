@@ -1,4 +1,5 @@
 const express = require('express')
+const { upload } = require('./multerSetup')
 const db = require('./db')
 
 const router = express.Router()
@@ -25,4 +26,20 @@ router.get('/articles/:id', async (req, res) => {
     console.log(err)
     res.sendStatus(500)
   }
+})
+
+router.post('/upload', (req, res) => {
+  upload(req, res, function (err) {
+    if (req.fileValidationError) {
+      return res.status(400).send({ message: req.fileValidationError })
+      // } else if (!req.file) {
+      //   return res.status(400).json({ message: 'Please select files to upload' })
+    } else if (err) {
+      console.log(err)
+      return res.sendStatus(500)
+    }
+
+    const paths = req.files.map((f) => f.path)
+    res.json({ paths })
+  })
 })
