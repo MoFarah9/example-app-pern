@@ -1,20 +1,20 @@
 import React, { useState } from 'react'
 
 export default function FileUpload() {
-  const [selectedFile, setSelectedFile] = useState(null)
+  const [selectedFiles, setSelectedFiles] = useState(null)
 
-  const onFileChange = (event) => setSelectedFile(event.target.files[0])
+  const onFileChange = (event) => setSelectedFiles(event.target.files)
 
   const onFileUpload = () => {
+    if (!selectedFiles) return
+
     const formData = new FormData()
+    for (let i = 0; i < selectedFiles.length; i++) {
+      formData.append('File', selectedFiles[i], selectedFiles[i].name)
+    }
 
-    if (!selectedFile) return
+    console.log(selectedFiles)
 
-    formData.append('File', selectedFile, selectedFile.name)
-
-    console.log(selectedFile)
-
-    // Send formData object
     fetch('api/uploadFiles', {
       method: 'POST',
       body: formData,
@@ -28,27 +28,13 @@ export default function FileUpload() {
       })
   }
 
-  const fileData = selectedFile ? (
-    <div>
-      <h2>File Details:</h2>
-      <p>File Name: {selectedFile.name}</p>
-      <p>File Type: {selectedFile.type}</p>
-      <p>Last Modified: {selectedFile.lastModifiedDate.toDateString()}</p>
-    </div>
-  ) : (
-    <div>
-      <h5>Choose before Pressing the Upload button</h5>
-    </div>
-  )
-
   return (
-    <div style={{ marginTop: '3rem' }}>
-      <h2>File Upload</h2>
+    <section style={{ marginTop: '3rem' }}>
+      <h2>Files Upload</h2>
       <div>
-        <input type="file" onChange={onFileChange} />
+        <input type="file" multiple onChange={onFileChange} />
         <button onClick={onFileUpload}>Upload!</button>
       </div>
-      {fileData}
-    </div>
+    </section>
   )
 }
