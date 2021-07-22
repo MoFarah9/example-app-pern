@@ -1,6 +1,7 @@
 import { Route, Switch } from 'react-router-dom'
-import NewArticle from './pages/NewArticle'
-import Home from './pages/Home'
+import HomePage from './pages/HomePage'
+import ArticlePage from './pages/ArticlePage'
+import NewArticlePage from './pages/NewArticlePage'
 
 export default function App() {
   return (
@@ -10,10 +11,13 @@ export default function App() {
       </header>
       <Switch>
         <Route exact path="/">
-          <Home />
+          <HomePage />
+        </Route>
+        <Route path="/article/:id">
+          <ArticlePage />
         </Route>
         <Route path="/new-article">
-          <NewArticle />
+          <NewArticlePage />
         </Route>
         <Route>
           <main>

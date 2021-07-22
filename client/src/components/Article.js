@@ -7,12 +7,23 @@ export default function Article({ id }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    console.log('id:', id, typeof id)
+
+    const fetchArticle = async (id) => {
+      const res = await fetch(`/api/articles/${id}`)
+      if (res.status === 404) throw new Error("This article doesn't exist")
+      return await res.json()
+    }
+
     fetchArticle(id)
       .then(({ title, body }) => {
         setTitle(title)
         setBody(body)
       })
-      .catch((error) => setError(error.message))
+      .catch((error) => {
+        console.log(error)
+        setError(error.message)
+      })
       .finally(() => setLoading(false))
   }, [id])
 
@@ -25,14 +36,4 @@ export default function Article({ id }) {
       <article dangerouslySetInnerHTML={{ __html: body }} />
     </div>
   )
-}
-
-async function fetchArticle(id) {
-  try {
-    const res = await fetch(`api/articles/${id}`)
-    if (res.status === 404) throw new Error("This article doesn't exist")
-    return await res.json()
-  } catch (error) {
-    throw new Error('Error fetching the article')
-  }
 }
