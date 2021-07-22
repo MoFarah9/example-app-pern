@@ -28,6 +28,20 @@ router.get('/articles/:id', async (req, res) => {
   }
 })
 
+router.post('/articles', async (req, res) => {
+  console.log('req.body:', req.body)
+  const { title, body } = req.body
+  try {
+    const query = 'INSERT INTO articles(title, body) VALUES($1, $2) RETURNING *'
+    const values = [title, body]
+    const result = await db.query(query, values)
+    res.json(result)
+  } catch (err) {
+    console.log(err)
+    res.sendStatus(500)
+  }
+})
+
 router.post('/upload', (req, res) => {
   upload(req, res, function (err) {
     if (req.fileValidationError) {
