@@ -35,7 +35,7 @@ router.post('/articles', async (req, res) => {
     const query = 'INSERT INTO articles(title, body) VALUES($1, $2) RETURNING *'
     const values = [title, body]
     const result = await db.query(query, values)
-    res.json(result)
+    res.json(result.rows[0])
   } catch (err) {
     console.log(err)
     res.sendStatus(500)

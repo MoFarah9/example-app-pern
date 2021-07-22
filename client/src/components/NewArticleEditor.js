@@ -7,6 +7,7 @@ import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 export default function NewArticleEditor() {
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
   const [title, setTitle] = useState('')
+  const [message, setMessage] = useState(null)
 
   const submitArticle = async () => {
     const rawContentState = convertToRaw(editorState.getCurrentContent())
@@ -24,7 +25,10 @@ export default function NewArticleEditor() {
       })
 
       const result = await rowRes.json()
-      console.log(result)
+
+      setMessage('Article was published with id:' + result.id)
+      setTitle('')
+      setEditorState(EditorState.createEmpty())
     } catch (error) {
       console.log(error)
     }
@@ -56,6 +60,7 @@ export default function NewArticleEditor() {
       />
       <br />
       <button onClick={submitArticle}>Submit Article</button>
+      {message && <p style={{ background: '#eee' }}>{message}</p>}
     </div>
   )
 }

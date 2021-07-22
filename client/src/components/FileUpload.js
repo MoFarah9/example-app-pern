@@ -5,7 +5,7 @@ export default function FileUpload() {
 
   const onFileChange = (event) => setSelectedFiles(event.target.files)
 
-  const uploadFiles = () => {
+  const uploadFiles = async () => {
     if (!selectedFiles) return
 
     const formData = new FormData()
@@ -13,18 +13,16 @@ export default function FileUpload() {
     for (let i = 0; i < selectedFiles.length; i++) {
       formData.append('files', selectedFiles[i], selectedFiles[i].name)
     }
-
-    fetch('/api/upload', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log('Upload Success:', result)
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
       })
-      .catch((error) => {
-        console.error('Upload Error:', error)
-      })
+      const result = await res.json()
+      console.log('Upload Success:', result)
+    } catch (error) {
+      console.error('Upload Error:', error)
+    }
   }
 
   const handleSubmit = (event) => {
