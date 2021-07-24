@@ -5,9 +5,5 @@ import Article from '../components/Article'
 export default function ArticlePage() {
   let { id } = useParams()
 
-  return (
-    <main>
-      <Article id={id} />
-    </main>
-  )
+  return <Article id={id} />
 }

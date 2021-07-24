@@ -53,7 +53,7 @@ router.post('/upload', (req, res) => {
       return res.sendStatus(500)
     }
 
-    const paths = req.files.map((f) => f.path)
-    res.json({ paths })
+    // const paths = req.files.map((f) => f.path)
+    res.json({ files: req.files })
   })
 })

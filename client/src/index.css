@@ -3,6 +3,7 @@
 *::before {
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
   padding: 0;
@@ -17,22 +18,40 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
+p {
+  line-height: 150%;
+}
+
 .App header {
   background-color: #f1f1f1;
   padding: 1rem 2rem;
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 1.2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  text-align: center;
 }
 
-.App main {
-  padding: 1rem 6rem;
-}
-
-.App main p {
-  line-height: 150%;
+.App .container {
+  padding: 0 16%;
 }
 
 .editor-wrapper {
   border: 1px solid #f1f1f1;
   padding: 2px;
+}
+
+article img {
+  max-width: 100%;
+}
+
+@media screen and (max-width: 900px) {
+  .App .container {
+    padding: 0 8%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .App .container {
+    padding: 0 1rem;
+  }
 }

@@ -7,7 +7,7 @@ import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 export default function NewArticleEditor() {
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
   const [title, setTitle] = useState('')
-  const [message, setMessage] = useState(null)
+  const [newId, setNewId] = useState(null)
 
   const submitArticle = async () => {
     const rawContentState = convertToRaw(editorState.getCurrentContent())
@@ -26,11 +26,27 @@ export default function NewArticleEditor() {
 
       const result = await rowRes.json()
 
-      setMessage('Article was published with id:' + result.id)
+      setNewId(result.id)
       setTitle('')
       setEditorState(EditorState.createEmpty())
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const uploadImageCallBack = async (file) => {
+    const data = new FormData()
+    data.append('files', file)
+
+    try {
+      const res = await fetch('/api/upload', { method: 'POST', body: data })
+      const result = await res.json()
+      console.log('Image was Uploaded:', result)
+      const imageUrl = 'http://localhost:5000/uploads/' + result.files[0].filename
+      return { data: { link: imageUrl } }
+    } catch (error) {
+      console.error('Image upload error:', error)
+      throw error
     }
   }
 
@@ -55,12 +71,26 @@ export default function NewArticleEditor() {
         editorState={editorState}
         onEditorStateChange={setEditorState}
         toolbar={{
-          options: ['inline', 'blockType', 'link', 'emoji', 'image', 'remove', 'history'],
+          list: { inDropdown: true },
+          textAlign: { inDropdown: true },
+          image: {
+            uploadEnabled: true,
+            uploadCallback: uploadImageCallBack,
+            alt: { present: true, mandatory: false },
+            previewImage: true,
+          },
         }}
       />
       <br />
       <button onClick={submitArticle}>Submit Article</button>
-      {message && <p style={{ background: '#eee' }}>{message}</p>}
+      {newId && (
+        <p>
+          Article was published.{' '}
+          <a target="_blank" rel="noreferrer" href={`/article/${newId}`}>
+            View here
+          </a>{' '}
+        </p>
+      )}
     </div>
   )
 }
