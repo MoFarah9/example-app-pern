@@ -29,7 +29,6 @@ router.get('/articles/:id', async (req, res) => {
 })
 
 router.post('/articles', async (req, res) => {
-  console.log('req.body:', req.body)
   const { title, body } = req.body
   try {
     const query = 'INSERT INTO articles(title, body) VALUES($1, $2) RETURNING *'
@@ -46,7 +45,7 @@ router.post('/upload', (req, res) => {
   upload(req, res, function (err) {
     if (req.fileValidationError) {
       return res.status(400).send({ message: req.fileValidationError })
-    } else if (!req.files) {
+    } else if (!req.files?.length) {
       return res.status(400).json({ message: 'Please select files to upload' })
     } else if (err) {
       console.log(err)

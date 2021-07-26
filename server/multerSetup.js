@@ -1,24 +1,17 @@
 const multer = require('multer')
 const path = require('path')
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'public/uploads/')
-  },
-
-  // By default, multer removes file extensions so let's add them back
-  filename: function (req, file, cb) {
-    cb(null, file.originalname)
-  },
+// store to disk
+const diskStorage = multer.diskStorage({
+  destination: 'public/uploads/',
+  filename: (req, file, cb) => cb(null, file.originalname),
 })
 
-const fileFilter = function (req, file, cb) {
-  // Accept images only
-  if (
-    file.mimetype == 'image/png' ||
-    file.mimetype == 'image/jpg' ||
-    file.mimetype == 'image/jpeg'
-  ) {
+// only accept images
+const onlyImagesFilter = function (req, file, cb) {
+  const mimes = ['image/png', 'image/jpg', 'image/jpeg']
+
+  if (mimes.includes(file.mimetype)) {
     cb(null, true)
   } else {
     cb(null, false)
@@ -28,4 +21,7 @@ const fileFilter = function (req, file, cb) {
 
 // 10 is the limit for number of uploaded files at once
 // 'files' is the name of our file input field
-module.exports.upload = multer({ storage, fileFilter }).array('files', 10)
+module.exports.upload = multer({
+  storage: diskStorage,
+  fileFilter: onlyImagesFilter,
+}).array('files', 10)
