@@ -46,13 +46,17 @@ router.post('/upload', (req, res) => {
     if (req.fileValidationError) {
       return res.status(400).send({ message: req.fileValidationError })
     } else if (!req.files?.length) {
+      console.log(err)
       return res.status(400).json({ message: 'Please select files to upload' })
     } else if (err) {
       console.log(err)
       return res.sendStatus(500)
     }
 
-    // const paths = req.files.map((f) => f.path)
-    res.json({ files: req.files })
+    const files = req.files.map(({ location, originalname }) => ({
+      location,
+      originalname,
+    }))
+    res.json({ files })
   })
 })

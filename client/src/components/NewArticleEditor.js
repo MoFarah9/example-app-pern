@@ -5,7 +5,9 @@ import draftToHtml from 'draftjs-to-html'
 import '../../node_modules/react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
 export default function NewArticleEditor() {
-  const [editorState, setEditorState] = useState(() => EditorState.createEmpty())
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  )
   const [title, setTitle] = useState('')
   const [newId, setNewId] = useState(null)
 
@@ -42,7 +44,7 @@ export default function NewArticleEditor() {
       const res = await fetch('/api/upload', { method: 'POST', body: data })
       const result = await res.json()
       console.log('Image was Uploaded:', result)
-      const imageUrl = 'http://localhost:5000/uploads/' + result.files[0].filename
+      const imageUrl = result.files[0].location
       return { data: { link: imageUrl } }
     } catch (error) {
       console.error('Image upload error:', error)
